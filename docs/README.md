@@ -411,8 +411,9 @@ A default set of fields are returned for each trophy but additional fields - suc
 ### Example URLs and Responses
 
 ##### Example 1 <!-- {docsify-ignore} -->
-Retrieve all trophies in the default group for title RESIDENT EVIL 5. Include secret trophies, default response fields and the trophy earned percentage field<br>
-`https://gb-tpy.np.community.playstation.net/trophy/v1/trophyTitles/NPWR10600_00/trophyGroups/default/trophies?npLanguage=en-GB&visibleType=1&fields=%40default%2CtrophyEarnedRate`
+**Retrieve all trophies in the default group for title RESIDENT EVIL 5. Include secret trophies, default response fields and the trophy earned percentage field**
+
+    https://gb-tpy.np.community.playstation.net/trophy/v1/trophyTitles/NPWR10600_00/trophyGroups/default/trophies?npLanguage=en-GB&visibleType=1&fields=%40default%2CtrophyEarnedRate
 
 ```json
 {
@@ -449,8 +450,10 @@ Retrieve all trophies in the default group for title RESIDENT EVIL 5. Include se
 ... truncated
 ```
 
-**Example 2: Retrieve all trophies in additional trophy group `001` ("VERSUS") for title RESIDENT EVIL 5. Include secret trophies, default response fields and the trophy earned percentage field**<br>
-`https://gb-tpy.np.community.playstation.net/trophy/v1/trophyTitles/NPWR10600_00/trophyGroups/001/trophies?npLanguage=en-GB&visibleType=1&fields=%40default%2CtrophyEarnedRate`
+##### Example 2 <!-- {docsify-ignore} -->
+**Retrieve all trophies in additional trophy group `001` ("VERSUS") for title RESIDENT EVIL 5. Include secret trophies, default response fields and the trophy earned percentage field**
+
+    https://gb-tpy.np.community.playstation.net/trophy/v1/trophyTitles/NPWR10600_00/trophyGroups/001/trophies?npLanguage=en-GB&visibleType=1&fields=%40default%2CtrophyEarnedRate
 
 ```json
 {
