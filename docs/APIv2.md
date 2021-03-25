@@ -556,6 +556,77 @@ As an example when accessing the trophy titles for a user which has 300 titles w
 
 ## Additional Endpoints
 
+### Trophy Profile Summary
+
+    https://m.np.playstation.net/api/trophy/v1/users/{accountId}/trophySummary
+
+A request to this URL will retrieve an overall summary of the number of trophies earned for a user broken down by type, as well as their current overall trophy level, progress towards the next level and which tier their current level falls in to. The tiers are based on the [level changes introduced in 2020](https://andshrew.github.io/PlayStation-Trophies/images/psn-trophy-tiers.png).
+
+The numeric `accountId` can be that of any PSN account for which the authenticating account has permissions to view the trophy list. When querying the titles associated with the authenticating account the numeric `accountId` can be substituted with `me`.
+
+| Tier | Grade | `trophyLevel` Ranges |
+| --- | --- | --- |
+| 1 | Bronze | 1 - 99 |
+| 2 | Bronze | 100 - 199 |
+| 3 | Bronze | 200 - 299 |
+| 4 | Silver | 300 - 399 |
+| 5 | Silver | 400 - 499 |
+| 6 | Silver | 500 - 599 |
+| 7 | Gold | 600 - 699 |
+| 8 | Gold | 700 - 799 |
+| 9 | Gold | 800 - 998 |
+| 10 | Platinum | 999 |
+
+#### Input Parameters <!-- {docsify-ignore} -->
+
+| Parameter | Type | Example Value | Description | Required |
+| --- | --- | --- | --- | --- |
+| accountId | String | `me`<br>`12340..` | The account whos trophy list is being accessed<br>Use `me` for the authenticating account | Yes
+
+#### Output JSON Response <!-- {docsify-ignore} -->
+
+| Attribute | Type | Example Value | Description |
+| --- | --- |--- | --- |
+| accountId | String | `12340..` | The ID of the account being accessed
+| trophyLevel | Numeric | `403` | The overall trophy level
+| progress | Numeric | `67` | Percentage process towards the next trophy level
+| tier | Numeric | `5` | The tier this trophy level is in
+| earnedTrophies | [JSON object](#overall-summary-earnedtrophies-json-objects) | | Number of trophies which have been earned by type
+
+#### earnedTrophies JSON objects <!-- {docsify-ignore} --> :id=overall-summary-earnedtrophies-json-objects
+
+| Attribute | Type | Example Value | Description |
+| --- | --- |--- | --- |
+| bronze | Numeric | `5225` | Total bronze trophies earned
+| silver | Numeric | `1116` | Total silver trophies earned
+| gold | Numeric | `355` | Total gold trophies earned
+| platinum | Numeric | `37` | Total platinum trophies earned
+
+#### Example URLs and Responses <!-- {docsify-ignore} -->
+
+**Example 1 - Summary of trophies earned by the authenticating account**
+
+    https://m.np.playstation.net/api/trophy/v1/users/me/trophySummary
+
+```json
+{
+  "accountId": "0000000000000000000",
+  "trophyLevel": 403,
+  "progress": 67,
+  "tier": 5,
+  "earnedTrophies": {
+    "bronze": 5225,
+    "silver": 1116,
+    "gold": 355,
+    "platinum": 37
+  }
+}
+```
+Executing this example using Powershell - see [Querying the API](#powershell-7)
+```powershell
+Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/trophySummary" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+```
+
 ### Title Trophy Groups
 
     https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/{npCommunicationId}/trophyGroups
