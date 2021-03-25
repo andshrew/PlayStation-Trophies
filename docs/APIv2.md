@@ -250,6 +250,8 @@ A request to this URL will retrieve the individual trophy detail of a single - o
 | trophyIconUrl | String | `https://...` | URL for the graphic associated with the trophy
 | trophyGroupId | String | `default`<br>`001` | ID of the trophy group this trophy belongs to
 | trophyProgressTargetValue | String | `10` | If the trophy tracks progress towards unlock this is the total required<br>**PS5 titles only<br>Only returned if trophy tracks progress**
+| trophyRewardName | String | `Profile Avatar` | Name of the reward earning the trophy grants<br>**PS5 titles only<br>Only returned if the trophy has a reward associated with it**
+| trophyRewardImageUrl | String | `trophyRewardImageUrl` | URL for the graphic associated with the reward<br>**PS5 titles only<br>Only returned if the trophy has a reward associated with it**
 
 ### Example URLs and Responses
 
@@ -340,6 +342,23 @@ Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/npCommunicati
       "trophyGroupId": "default",
       "trophyProgressTargetValue": "9"
     },
+```
+
+**Bonus Example 2 - Extract from a PS5 title with a trophy that grants a reward on unlock (NPWR22792_00 - Destruction AllStars)**
+
+```json
+{
+      "trophyId": 28,
+      "trophyHidden": false,
+      "trophyType": "gold",
+      "trophyName": "Checking out the competition",
+      "trophyDetail": "Win at least 1 online match with each AllStar",
+      "trophyIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR22792_00/908c536b-c8d4-4591-bd62-b330ccdb20ef.png",
+      "trophyGroupId": "default",
+      "trophyProgressTargetValue": "16",
+      "trophyRewardName": "Profile Avatar",
+      "trophyRewardImageUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR22792_00/486de18c-2da3-46e7-8229-4006adb8c28b.png"
+}
 ```
 
 ## 3. Retrieve Trophies earned for a Title
@@ -642,7 +661,7 @@ Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
 Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
-### Summary of Trophies Earned by Group
+### Summary of Trophies Earned by Trophy Group
 
     https://m.np.playstation.net/api/trophy/v1/users/{accountId}/npCommunicationIds/{npCommunicationId}/trophyGroups
 
