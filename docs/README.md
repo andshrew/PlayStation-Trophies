@@ -13,7 +13,7 @@ These APIs have been documented by by capturing the requests made by the https:/
 
 ## Additional Thanks <!-- {docsify-ignore} -->
 
-With thanks to projects [Tustin/psn-php](https://github.com/Tustin/psn-php) and [games-directory/api-psn](https://github.com/games-directory/api-psn) for their work on understanding authentication to https://ca.account.sony.com/api/authz/v3.
+With thanks to projects [Tustin/psn-php](https://github.com/Tustin/psn-php) and [games-directory/api-psn](https://github.com/games-directory/api-psn) for their work on understanding authentication to https://ca.account.sony.com/api/authz/v3, and to [Ragowit](https://github.com/Ragowit) for their contribution in documenting the APIs.
 
 
 [View on GitHub andshrew/PlayStation-Trophies](https://github.com/andshrew/PlayStation-Trophies/)
