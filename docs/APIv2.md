@@ -12,7 +12,6 @@ This revision of the API is the only way to retrieve trophies for PS5 titles. It
 ## Notable Changes from API v1
 * PS5 titles can now (optionally) track your progress towards earning a trophy, and this progress is available in the new API.
 * The v1 API enabled you to retrieve trophy earn rate statistics for any title. In the new API this is more restrictive in that this information is only returned when you request the trophy earned status for an account. If the account you are querying has not played the title then no trophy information is returned. Therefore as it currently stands statistics for PS5 titles can only be retrieved by querying an account which has played the title (and allowed their trophies to sync) at least once.
-* The v1 API allowed you to specify the language you wanted the response to be provided in. It is currently unclear if there is a way to specify this, or whether the response is dependant on the primary language of the authenticating account.
 
 #   API Documentation
 
@@ -533,6 +532,35 @@ Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/0000000
     },
 ```
 
+## Support for Language
+
+By default the API will provide responses using the preferred language of the authenticating account.
+
+This can be overridden by including an [Accept-Language](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language) header in the request.
+
+An example using Powershell to retrieve all trophies for PS5 title ASTRO’s PLAYROOM in German - see [Querying the API](#powershell-7)
+
+```powershell
+Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies" -Authentication Bearer -Token $token -Headers @{"Accept-Language"="de-de"} | ConvertTo-Json -Depth 3
+```
+
+```json
+{
+  "trophySetVersion": "01.40",
+  "hasTrophyGroups": true,
+  "trophies": [
+    {
+      "trophyId": 0,
+      "trophyHidden": false,
+      "trophyType": "platinum",
+      "trophyName": "Du hast wirklich alles erledigt",
+      "trophyDetail": "Alle Trophäen in ASTRO's PLAYROOM gefunden. Wir sehen uns im nächsten Abenteuer!",
+      "trophyIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR20188_00/4e1f7ad7-5720-4b03-96a4-ecf8abb17ed8.png",
+      "trophyGroupId": "default"
+    },
+<#-- truncated --#>
+}
+```
 ## Support for Pagination
 
 By default the `limit` of results returned is either very high (ie. 1000+), or such that it simply returns all records. In either case this means that in the majority of cases one query will be able to return all available records. There may be times when it is preferable to control how much data is being returned at once, and to enable this many of the endpoints in this API have support for pagination.
