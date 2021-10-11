@@ -70,7 +70,7 @@ The results are presented in order of the `lastUpdatedDateTime` for the title, s
 | trophyTitleName | String | `ASTRO’s PLAYROOM` | Title name
 | trophyTitleDetail | String | `RESIDENT EVIL 5 Trophy Set` | Title description<br>**PS3, PS4 and PS Vita titles only**
 | trophyTitleIconUrl | String | `https://...` | URL of the icon for the title
-| trophyTitlePlatfrom | String | `PS5`<br>`PS4` | The platform this title belongs to. Some games have trophy sets which are shared between multiple platforms (ie. PS4,PSVITA). The platforms will be comma separated.
+| trophyTitlePlatform | String | `PS5`<br>`PS4` | The platform this title belongs to. Some games have trophy sets which are shared between multiple platforms (ie. PS4,PSVITA). The platforms will be comma separated.
 | hasTrophyGroups | Boolean | `true` | True if the title has multiple groups of trophies (eg. DLC trophies which are separate from the main trophy list)
 | definedTrophies | [JSON object](#trophy-titles-definedTrophies-json-objects) | | Number of trophies for the title by type
 | progress | Numeric | 100 | Percentage of trophies earned for the title
