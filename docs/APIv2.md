@@ -936,6 +936,190 @@ Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
 Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/0000000000000000000/npCommunicationIds/NPWR10600_00/trophyGroups?npServiceName=trophy" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
+### Trophy Title Summary for Specific Title ID
+
+    https://m.np.playstation.net/api/trophy/v1/users/{accountId}/titles/trophyTitles?npTitleIds={titleId}
+
+A request to this URL will retrieve a summary of the trophies earned by a user for specific titles.
+
+The `titleId` can be a single title ID, or it can be a comma seperated list of title IDs (%2C when used in a URL). Every title has has an ID assigned to it with these typically starting "CUSA" for PS4 titles and "PPSA" for PS5 titles.
+
+The numeric `accountId` can be that of any PSN account for which the authenticating account has permissions to view the trophy list. When querying the titles associated with the authenticating account the numeric `accountId` can be substituted with `me`.
+
+This endpoint can be used as a way of linking the `npCommunicationId` of a Trophy Set to a titles `npTitleId`, but as with the other user based endpoints in this version of the API you will only get a useful response back if the account you are querying against has played the title.
+
+!> If you attempt to query a title ID which does not exist then a _Resource not found_ error will be returned.
+
+#### Input Parameters <!-- {docsify-ignore} -->
+
+| Parameter | Type | Example Value | Description | Required |
+| --- | --- | --- | --- | --- |
+| accountId | String | `me`<br>`12340..` | The account whos trophy list is being accessed<br>Use `me` for the authenticating account | Yes
+| npTitleIds | String | `PPSA01284_00`<br>`PPSA01284_00%2CCUSA09171_00` | Unique ID of the title | Yes
+
+#### Output JSON Response <!-- {docsify-ignore} -->
+
+| Attribute | Type | Example Value | Description |
+| --- | --- |--- | --- |
+| titles | [JSON object](#trophy-title-summary-for-specific-title-id-titles-json-objects) | | Individual object for each title returned
+
+#### titles JSON objects <!-- {docsify-ignore} --> :id=trophy-title-summary-for-specific-title-id-titles-json-objects
+
+| Attribute | Type | Example Value | Description |
+| --- | --- |--- | --- |
+| npTitleId | String | `PPSA01284_00` | npTitleId of the title
+| trophyTitles | [JSON object](#trophy-title-summary-for-specific-title-id-trophyTitles-json-objects) | | Trophy set associated with the title<br>**This will only be returned if the queried account has played the title (and allowed their trophies to sync) at least once**
+
+#### trophyTitles JSON objects <!-- {docsify-ignore} --> :id=trophy-title-summary-for-specific-title-id-trophyTitles-json-objects
+
+| Attribute | Type | Example Response | Description |
+| --- | --- |--- | --- |
+| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 platform
+| npCommunicationId | String | `NPWR20004_00` | Unique ID of the trophy set
+| trophyTitleName | String | `Returnal` | Title name
+| trophyTitleDetail | String | `RESIDENT EVIL 5 Trophy Set` | Title description<br>**PS3, PS4 and PS Vita titles only**
+| trophyTitleIconUrl | String | `https://...` | URL of the icon for the title
+| hasTrophyGroups | Boolean | `true` | True if the title has multiple groups of trophies (eg. DLC trophies which are separate from the main trophy list)
+| rarestTrophies | [JSON object](#trophy-title-summary-for-specific-title-id-rarestTrophies-json-objects) | | Individual object for each trophy<br>Returns the trophy where `earned` is `true` with the lowest `trophyEarnedRate`.<br>**Returns nothing if no trophies are earned**
+| progress | Numeric | 100 | Percentage of trophies earned for the title
+| earnedTrophies | [JSON object](#trophy-title-summary-for-specific-title-id-earnedTrophies-json-objects) | | Number of trophies for the title which have been earned by type
+| definedTrophies | [JSON object](#trophy-title-summary-for-specific-title-id-definedTrophies-json-objects) | | Number of trophies for the title by type
+| lastUpdatedDateTime | Date (UTC) | `2021-06-20T12:46:34Z` | Date most recent trophy earned for the title
+
+#### rarestTrophies JSON objects <!-- {docsify-ignore} --> :id=trophy-title-summary-for-specific-title-id-rarestTrophies-json-objects
+
+| Attribute | Type | Example Value | Description |
+| --- | --- |--- | --- | 
+| trophyId | Numeric<br>**Min** 0  | `0`| Unique ID for this trophy (unique within the title and not just the group)
+| trophyHidden | Boolean | `false` | True if this is a secret trophy (ie. further details are not displayed by default unless earned)
+| trophyType | String | `bronze`<br>`silver`<br>`gold`<br>`platinum` | Type of the trophy
+| trophyName | String | `Helios` | Name of the trophy
+| trophyDetail | String | `Collect all trophies` | Description of the trophy
+| trophyIconUrl | String | `https://...` | URL for the graphic associated with the trophy
+| trophyRare | Numeric | `0`<br>`1` | Rarity of the trophy<br>`0` Ultra Rare<br>`1` Very Rare<br>`2` Rare<br>`3` Common
+| trophyEarnedRate | String | `2.9` | Percentage of all users who have earned the trophy
+| earned | Boolean | `true` | True if this trophy has been earned
+| earnedDateTime | Date (UTC) | `2021-06-20T12:46:33Z` | Date trophy was earned
+
+#### earnedTrophies JSON objects <!-- {docsify-ignore} --> :id=trophy-title-summary-for-specific-title-id-earnedTrophies-json-objects
+
+| Attribute | Type | Example Value | Description |
+| --- | --- |--- | --- | 
+| bronze | Numeric | `27` | Total bronze trophies earned from all trophy groups
+| silver | Numeric | `13` | Total silver trophies earned from all trophy groups
+| gold | Numeric | `5` | Total gold trophies earned from all trophy groups
+| platinum | Numeric | `1` | Total platinum trophies earned from all trophy groups
+
+#### definedTrophies JSON objects <!-- {docsify-ignore} --> :id=trophy-title-summary-for-specific-title-id-definedTrophies-json-objects
+
+| Attribute | Type | Example Value | Description |
+| --- | --- |--- | --- | 
+| bronze | Numeric | `27` | Total bronze trophies from all trophy groups
+| silver | Numeric | `13` | Total silver trophies from all trophy groups
+| gold | Numeric | `5` | Total gold trophies from all trophy groups
+| platinum | Numeric | `1` | Total platinum trophies from all trophy groups
+
+#### Example URLs and Responses <!-- {docsify-ignore} -->
+
+**Example 1 - Summary of trophy titles associated with title IDs PPSA01284_00 (Returnal, PS5), CUSA09171_00 (RESIDENT EVIL 2, PS4) and PPSA04874_00 (Apex Legends, PS5) for the authenticating account**
+
+    https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?npTitleIds=CUSA09171_00%2CPPSA01284_00%2CPPSA04874_00
+
+```json
+{
+  "titles": [
+    {
+      "npTitleId": "PPSA01284_00",
+      "trophyTitles": [
+        {
+          "npServiceName": "trophy2",
+          "npCommunicationId": "NPWR20004_00",
+          "trophyTitleName": "Returnal",
+          "trophyTitleIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR20004_00/f60fd55f-a01f-4274-a865-d8356dc0fd9c.png",
+          "hasTrophyGroups": false,
+          "rarestTrophies": [
+            {
+              "trophyId": 0,
+              "trophyHidden": false,
+              "trophyType": "platinum",
+              "trophyName": "Helios",
+              "trophyDetail": "Collect all trophies",
+              "trophyIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR20004_00/aadf79b0-5119-45a2-b925-4e9b6e4bf4ed.png",
+              "trophyRare": 0,
+              "trophyEarnedRate": "2.9",
+              "earned": true,
+              "earnedDateTime": "2021-06-20T12:46:33Z"
+            }
+          ],
+          "progress": 100,
+          "earnedTrophies": {
+            "bronze": 18,
+            "silver": 5,
+            "gold": 7,
+            "platinum": 1
+          },
+          "definedTrophies": {
+            "bronze": 18,
+            "silver": 5,
+            "gold": 7,
+            "platinum": 1
+          },
+          "lastUpdatedDateTime": "2021-06-20T12:46:34Z"
+        }
+      ]
+    },
+    {
+      "npTitleId": "CUSA09171_00",
+      "trophyTitles": [
+        {
+          "npServiceName": "trophy",
+          "npCommunicationId": "NPWR15179_00",
+          "trophyTitleName": "RESIDENT EVIL 2",
+          "trophyTitleDetail": "RESIDENT EVIL 2",
+          "trophyTitleIconUrl": "https://image.api.playstation.com/trophy/np/NPWR15179_00_004E1F39C12A2C6264BA2A0546D9234F56889DCC5F/BAFEDE2151A73E1FAFE59B8575EC1CF99F6A75F6.PNG",
+          "hasTrophyGroups": true,
+          "rarestTrophies": [
+            {
+              "trophyId": 0,
+              "trophyHidden": false,
+              "trophyType": "platinum",
+              "trophyName": "Raccoon City Native",
+              "trophyDetail": "Obtain all trophies.",
+              "trophyIconUrl": "https://image.api.playstation.com/trophy/np/NPWR15179_00_004E1F39C12A2C6264BA2A0546D9234F56889DCC5F/F957C0C5B0D2B63EBE1BB072B521E2B5A24D2986.PNG",
+              "trophyRare": 0,
+              "trophyEarnedRate": "3.4",
+              "earned": true,
+              "earnedDateTime": "2020-10-18T15:23:07Z"
+            }
+          ],
+          "progress": 95,
+          "earnedTrophies": {
+            "bronze": 29,
+            "silver": 9,
+            "gold": 4,
+            "platinum": 1
+          },
+          "definedTrophies": {
+            "bronze": 30,
+            "silver": 10,
+            "gold": 4,
+            "platinum": 1
+          },
+          "lastUpdatedDateTime": "2020-10-18T15:23:11Z"
+        }
+      ]
+    },
+    {
+      "npTitleId": "PPSA04874_00",
+      "trophyTitles": []
+    }
+  ]
+}
+```
+Executing this example using Powershell - see [Querying the API](#powershell-7)
+```powershell
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?npTitleIds=CUSA09171_00%2CPPSA01284_00%2CPPSA04874_00" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+```
 
 # Querying the API
 
