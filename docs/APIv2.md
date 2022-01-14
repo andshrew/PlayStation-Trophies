@@ -869,7 +869,7 @@ Executing this example using Powershell - see [Querying the API](#powershell-7)
 Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/npCommunicationIds/NPWR20188_00/trophyGroups" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 
-**Example 2 - Summary of trophies earned by trophy group for another PSN account with accountId _0000000000000000000_ in PS5 title RESIDENT EVIL 5**
+**Example 2 - Summary of trophies earned by trophy group for another PSN account with accountId _0000000000000000000_ in PS4 title RESIDENT EVIL 5**
 
     https://m.np.playstation.net/api/trophy/v1/users/0000000000000000000/npCommunicationIds/NPWR10600_00/trophyGroups?npServiceName=trophy
 
