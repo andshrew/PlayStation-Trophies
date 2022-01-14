@@ -942,7 +942,7 @@ Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/0000000
 
 A request to this URL will retrieve a summary of the trophies earned by a user for specific titles.
 
-The `titleId` can be a single title ID, or it can be a comma seperated list of title IDs (%2C when used in a URL). Every title has has an ID assigned to it with these typically starting "CUSA" for PS4 titles and "PPSA" for PS5 titles.
+The `titleId` can be a single title ID, or it can be a comma seperated list of title IDs (%2C when used in a URL). Every title has an ID assigned to it with these typically starting "CUSA" for PS4 titles and "PPSA" for PS5 titles.
 
 The numeric `accountId` can be that of any PSN account for which the authenticating account has permissions to view the trophy list. When querying the titles associated with the authenticating account the numeric `accountId` can be substituted with `me`.
 
