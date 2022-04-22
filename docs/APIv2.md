@@ -1146,6 +1146,11 @@ function Get-AuthenticationToken {
     [string]$npsso
   )
 
+  if ($PSVersionTable.PSVersion.Major -lt 7) {
+    Write-Host "This function requires PowerShell 7. Download it from https://github.com/PowerShell/PowerShell"
+    return
+  }
+
   $url = "https://ca.account.sony.com/api/authz/v3/oauth/authorize?access_type=offline&client_id=ac8d161a-d966-4728-b0ea-ffec22f69edc&redirect_uri=com.playstation.PlayStationApp%3A%2F%2Fredirect&response_type=code&scope=psn%3Amobile.v1%20psn%3Aclientapp"
 
   try {
@@ -1153,12 +1158,13 @@ function Get-AuthenticationToken {
       "Cookie"="npsso=$npsso"
     }
     Write-Host "Error: Check npsso"
+    return
   }
   catch {
     if ($_.Exception.Response.Headers.Location.Query -like "?code=v3*") {
       $query = [System.Web.HttpUtility]::ParseQueryString($_.Exception.Response.Headers.Location.Query)
     }
-    else {  Write-Host "Error: Check npsso" }
+    else {  Write-Host "Error: Check npsso"; return }
   }
 
   $body = @{
