@@ -950,12 +950,14 @@ This endpoint can be used as a way of linking the `npCommunicationId` of a Troph
 
 !> If you attempt to query a title ID which does not exist then a _Resource not found_ error will be returned.
 
+!> There is a limit of 5 title IDs which can be included in the `npTitleIds` query. Trying to include more than 5 will result in a _Bad Request (query: npTitleId)_ error being returned.
+
 #### Input Parameters <!-- {docsify-ignore} -->
 
 | Parameter | Type | Example Value | Description | Required |
 | --- | --- | --- | --- | --- |
 | accountId | String | `me`<br>`12340..` | The account whos trophy list is being accessed<br>Use `me` for the authenticating account | Yes
-| npTitleIds | String | `PPSA01284_00`<br>`PPSA01284_00%2CCUSA09171_00` | Unique ID of the title | Yes
+| npTitleIds | String | `PPSA01284_00`<br>`PPSA01284_00%2CCUSA09171_00` | Unique ID of the title<br>Limit of 5 per request | Yes
 
 #### Output JSON Response <!-- {docsify-ignore} -->
 
