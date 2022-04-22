@@ -2,6 +2,8 @@
 
 !> This revision of the API cannot retrieve trophies for PS5 titles. See [PlayStation Trophies API v2](APIv2) for an API which can.
 
+!> The my.playstation.com web site was shut down on 28th June 2021. While the API endpoints documented here appear to still be available you may no longer be able to obtain an authentication token for accessing them. See [PlayStation Trophies API v2](APIv2) for a currently supported version.
+
 ## Overview
 * Accessing the API requires authentication with a PSN account.
 * The trophy details returned will by default be that of the authenticating PSN account.
@@ -511,6 +513,8 @@ As an example, this request returned the trophy groups for title RESIDENT EVIL 5
 ![](images/2020-09-10-17-50-26.png)
 
 ## Obtaining an Authentication Token
+
+!> The my.playstation.com web site was shut down on 28th June 2021. While the API endpoints documented here appear to still be available you will no longer be able to obtain an authentication token using this example. See [PlayStation Trophies API v2](APIv2) for a currently supported version.
 
 A quick and simple way to obtain an authentication token is to sign into the my.playstation.com web site and extract the token from the request headers that it is generating.
 

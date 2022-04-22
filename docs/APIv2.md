@@ -25,7 +25,7 @@ There are three core API endpoints which you will need to make a request to in o
 
 Successful requests to the API will return a JSON response. These URLs, the inputs they require and the response they return are detailed below.
 
-?> The base URL is actually https://**{platform}**.**{environment}**.playstation.net/api/trophy. `{platform}` can currently be `m` or `ps5`. This will likely also include `web` once https://my.playstation.com has been updated to use these APIs. The `np` environment is the production PSN network and will be the only one accessible via normal PSN accounts.
+?> The base URL is actually https://**{platform}**.**{environment}**.playstation.net/api/trophy. `{platform}` can currently be `m` or `ps5`. The `np` environment is the production PSN network and will be the only one accessible via normal PSN accounts.
 
 **Other Examples**<br>
 https://ps5.np.playstation.net/api/trophy<br>
@@ -1192,7 +1192,7 @@ function Get-AuthenticationToken {
 }
 ```
 
-2. In your web browser access https://my.playstation.com and log in with a PSN account.
+2. In your web browser access https://store.playstation.com and log in with a PSN account.
 3. In the same browser access https://ca.account.sony.com/api/v1/ssocookie<br>You should see a response with `npsso` followed by a string of letters and numbers. Highlight and copy this.
 ![test](images/2021-03-20-15-33-08.png)
 4. In the Powershell session run the following command, substituting in your npsso token copied in the previous step
