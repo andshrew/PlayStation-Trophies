@@ -1,0 +1,49 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch via Node http-server",
+            "request": "launch",
+            "runtimeArgs": [
+                "--yes",
+                "http-server",
+                "docs",
+                "-a",
+                "127.0.0.1",
+                "-p 3000",
+                "-c-1"
+            ],
+            "runtimeExecutable": "npx",
+            "cwd": "${workspaceFolder}",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "http://[0-9.]+: ([0-9]+)",
+                "uriFormat": "http://localhost:%s",
+            },
+            "type": "node"
+        },
+        {
+            "name": "Launch via Python http.server",
+            "type": "python",
+            "request": "launch",
+            "module": "http.server",
+            "args": ["3000"],
+            "cwd": "${workspaceFolder}/docs",
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "Serving HTTP on [0-9.]+ port ([0-9]+)",
+                "uriFormat": "http://localhost:%s",
+            },
+            "justMyCode": true,
+            "windows": {
+                "cwd": "${workspaceFolder}\\docs",
+              }
+        }
+    ]
+}
