@@ -47,7 +47,7 @@ The results are presented in order of the `lastUpdatedDateTime` for the title, s
 | Parameter | Type | Example Value | Description | Required |
 | --- | --- | --- | --- | --- |
 | accountId | String | `me`<br>`12340..` | The account whos trophy list is being accessed<br>Use `me` for the authenticating account | Yes
-| limit | Numeric<br>**Min** 1<br>**Max** Unknown<br>**Default** ??? | `20` | Limit the number of titles returned | No |
+| limit | Numeric<br>**Min** 1<br>**Max** 800<br>**Default** 100 | `20` | Limit the number of titles returned | No |
 | offset | Numeric<br>**Min** 0<br>**Max** `totalItemCount` - 1<br>**Default** 0 | `20` | Returns title data from this result onwards | No |
 
 
@@ -223,7 +223,7 @@ A request to this URL will retrieve the individual trophy detail of a single - o
 | npCommunicationId | String | `NPWR20188_00` | Unique ID of the title | Yes
 | trophyGroupId | String | `all`<br>`default`<br>`001` | `all` to return all trophies for the title, otherwise restrict results to a specific trophy group | Yes
 | npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 platform | No, unless title platform is PS3, PS4 or PS Vita then **must** be `trophy`
-| limit | Numeric<br>**Min** 1<br>**Max** Unknown<br>**Default** ??? | `20` | Limit the number of trophies returned | No |
+| limit | Numeric<br>**Min** 1<br>**Max** > 400<br>**Default** All trophies | `20` | Limit the number of trophies returned<br>*If no limit is specified all trophies will be returned* | No |
 | offset | Numeric<br>**Min** 0<br>**Max** `totalItemCount` - 1<br>**Default** 0 | `20` | Returns trophy data from this result onwards | No |
 
 ### Output JSON Response
@@ -382,7 +382,7 @@ This endpoint returns the earned status of the trophy only and no additional des
 | npCommunicationId | String | `NPWR20188_00` | Unique ID of the title | Yes
 | trophyGroupId | String | `all`<br>`default`<br>`001` | `all` to return all trophies for the title, otherwise restrict results to a specific trophy group | Yes
 | npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 platform | No, unless title platform is PS3, PS4 or PS Vita then **must** be `trophy`
-| limit | Numeric<br>**Min** 1<br>**Max** Unknown<br>**Default** ??? | `20` | Limit the number of trophies returned | No |
+| limit | Numeric<br>**Min** 1<br>**Max** > 400<br>**Default** All trophies | `20` | Limit the number of trophies returned<br>*If no limit is specified all trophies will be returned* | No |
 | offset | Numeric<br>**Min** 0<br>**Max** `totalItemCount` - 1<br>**Default** 0 | `20` | Returns trophy data from this result onwards | No |
 
 ### Output JSON Response
