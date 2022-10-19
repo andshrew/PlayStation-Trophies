@@ -15,7 +15,7 @@ This revision of the API is the only way to retrieve trophies for PS5 titles. It
 
 #   API Documentation
 
-The base URL for accessing this API is: https://m.np.playstation.net/api/trophy
+The base URL for accessing this API is: https://m.np.playstation.com/api/trophy
 
 There are three core API endpoints which you will need to make a request to in order to be able to retrieve the trophy details of a user. 
 
@@ -25,14 +25,11 @@ There are three core API endpoints which you will need to make a request to in o
 
 Successful requests to the API will return a JSON response. These URLs, the inputs they require and the response they return are detailed below.
 
-?> The base URL is actually https://**{platform}**.**{environment}**.playstation.net/api/trophy. `{platform}` can currently be `m` or `ps5`. The `np` environment is the production PSN network and will be the only one accessible via normal PSN accounts.
-
-**Other Examples**<br>
-https://ps5.np.playstation.net/api/trophy<br>
+?> The base URL is actually https://**{platform}**.**{environment}**.playstation.com/api/trophy. `{platform}` can currently be `m`. The `np` environment is the production PSN network and will be the only one accessible via normal PSN accounts.
 
 ## 1. Retrieve the Trophy Titles for a User
 
-    https://m.np.playstation.net/api/trophy/v1/users/{accountId}/trophyTitles
+    https://m.np.playstation.com/api/trophy/v1/users/{accountId}/trophyTitles
 
 Requests to this URL will retrieve a list of the titles associated with an account, and a summary of trophies earned from them. 
 
@@ -100,7 +97,7 @@ The results are presented in order of the `lastUpdatedDateTime` for the title, s
 
 **Example 1 - Retrieve all trophy titles for the authenticating account**
 
-    https://m.np.playstation.net/api/trophy/v1/users/me/trophyTitles
+    https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles
 
 ```json
 {
@@ -161,11 +158,11 @@ The results are presented in order of the `lastUpdatedDateTime` for the title, s
 ```
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/trophyTitles" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 **Example 2 - Retrieve up to 10 titles starting at title 50 for the authenticating account**
 
-    https://m.np.playstation.net/api/trophy/v1/users/me/trophyTitles?limit=10&offset=50
+    https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles?limit=10&offset=50
 
 ```json
 {
@@ -205,12 +202,12 @@ Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/trop
 ```
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/trophyTitles?limit=10&offset=50" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles?limit=10&offset=50" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 
 ## 2. Retrieve the Trophies for a Title
 
-    https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/{npCommunicationId}/trophyGroups/{trophyGroupId}/trophies
+    https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/{npCommunicationId}/trophyGroups/{trophyGroupId}/trophies
 
 A request to this URL will retrieve the individual trophy detail of a single - or all - trophy groups for a title. A title can have multiple groups of trophies (a `default` group which all titles have, and additional groups named `001` incrementing for each additional group). To retrieve trophies from all groups within a title (ie. the full trophy set) then `trophyGroupId` should be set to `all`.
 
@@ -256,7 +253,7 @@ A request to this URL will retrieve the individual trophy detail of a single - o
 
 **Example 1 - Retrieve all trophies for PS5 title ASTRO’s PLAYROOM**
 
-    https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies
+    https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies
 
 ```json
 {
@@ -288,12 +285,12 @@ A request to this URL will retrieve the individual trophy detail of a single - o
 ```
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 
 **Example 2 - Retrieve all trophies for PS4 title RESIDENT EVIL 5**
 
-    https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/NPWR10600_00/trophyGroups/all/trophies?npServiceName=trophy
+    https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/NPWR10600_00/trophyGroups/all/trophies?npServiceName=trophy
 
 ```json
 {
@@ -325,7 +322,7 @@ Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/npCommunicati
 ```
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/NPWR10600_00/trophyGroups/all/trophies?npServiceName=trophy" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/NPWR10600_00/trophyGroups/all/trophies?npServiceName=trophy" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 
 **Bonus Example - Extract from a PS5 title with a trophy which tracks unlock progress (NPWR19950_00 - Sackboy: A Big Adventure)**
@@ -362,7 +359,7 @@ Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/npCommunicati
 
 ## 3. Retrieve Trophies earned for a Title
 
-    https://m.np.playstation.net/api/trophy/v1/users/{accountId}/npCommunicationIds/{npCommunicationId}/trophyGroups/{trophyGroupId}/trophies
+    https://m.np.playstation.com/api/trophy/v1/users/{accountId}/npCommunicationIds/{npCommunicationId}/trophyGroups/{trophyGroupId}/trophies
 
 A request to this URL will retrieve the earned status of trophies for a user from either a single - or all - trophy groups in a title. A title can have multiple groups of trophies (a `default` group which all titles have, and additional groups named `001` incrementing for each additional group). To retrieve trophies from all groups within a title (ie. the full trophy set) then `trophyGroupId` should be set to `all`.
 
@@ -429,7 +426,7 @@ This endpoint returns the earned status of the trophy only and no additional des
 
 **Example 1 - Retrieve all trophies earned by the authenticating account for PS5 title ASTRO’s PLAYROOM**
 
-    https://m.np.playstation.net/api/trophy/v1/users/me/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies
+    https://m.np.playstation.com/api/trophy/v1/users/me/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies
 
 ```json
 {
@@ -473,12 +470,12 @@ This endpoint returns the earned status of the trophy only and no additional des
 ```
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 
 **Example 2 - Retrieve all trophies earned by another PSN account with accountId _0000000000000000000_ limited to the default trophy group of PS4 title RESIDENT EVIL 5**
     
-    https://m.np.playstation.net/api/trophy/v1/users/0000000000000000000/npCommunicationIds/NPWR10600_00/trophyGroups/default/trophies?npServiceName=trophy
+    https://m.np.playstation.com/api/trophy/v1/users/0000000000000000000/npCommunicationIds/NPWR10600_00/trophyGroups/default/trophies?npServiceName=trophy
 
 ```json
 {
@@ -513,7 +510,7 @@ Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/npCo
 ```
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/0000000000000000000/npCommunicationIds/NPWR10600_00/trophyGroups/default/trophies?npServiceName=trophy" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/0000000000000000000/npCommunicationIds/NPWR10600_00/trophyGroups/default/trophies?npServiceName=trophy" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 
 **Bonus Example - Extract from a PS5 title with a trophy which tracks unlock progress (NPWR19950_00 - Sackboy: A Big Adventure**)
@@ -541,7 +538,7 @@ This can be overridden by including an [Accept-Language](https://developer.mozil
 An example using Powershell to retrieve all trophies for PS5 title ASTRO’s PLAYROOM in German - see [Querying the API](#powershell-7)
 
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies" -Authentication Bearer -Token $token -Headers @{"Accept-Language"="de-de"} | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups/all/trophies" -Authentication Bearer -Token $token -Headers @{"Accept-Language"="de-de"} | ConvertTo-Json -Depth 3
 ```
 
 ```json
@@ -586,7 +583,7 @@ As an example when accessing the trophy titles for a user which has 300 titles w
 
 ### Trophy Profile Summary
 
-    https://m.np.playstation.net/api/trophy/v1/users/{accountId}/trophySummary
+    https://m.np.playstation.com/api/trophy/v1/users/{accountId}/trophySummary
 
 A request to this URL will retrieve an overall summary of the number of trophies earned for a user broken down by type, as well as their current overall trophy level, progress towards the next level and which tier their current level falls in to. The tiers are based on the [level changes introduced in 2020](https://andshrew.github.io/PlayStation-Trophies/images/psn-trophy-tiers.png).
 
@@ -634,7 +631,7 @@ The numeric `accountId` can be that of any PSN account for which the authenticat
 
 **Example 1 - Summary of trophies earned by the authenticating account**
 
-    https://m.np.playstation.net/api/trophy/v1/users/me/trophySummary
+    https://m.np.playstation.com/api/trophy/v1/users/me/trophySummary
 
 ```json
 {
@@ -652,12 +649,12 @@ The numeric `accountId` can be that of any PSN account for which the authenticat
 ```
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/trophySummary" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/trophySummary" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 
 ### Title Trophy Groups
 
-    https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/{npCommunicationId}/trophyGroups
+    https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/{npCommunicationId}/trophyGroups
 
 A title may have additional groups of trophies. This is most commonly seen in games which have expansions where additional trophies are added.
 
@@ -716,7 +713,7 @@ You can make a request to this URL for a specific title - using the unique `npCo
 
 **Example 1 - Retrieve trophy groups for PS5 title ASTRO’s PLAYROOM**
 
-    https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups
+    https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups
 
 ```json
 {
@@ -758,11 +755,11 @@ You can make a request to this URL for a specific title - using the unique `npCo
 ```
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 ### Summary of Trophies Earned by Trophy Group
 
-    https://m.np.playstation.net/api/trophy/v1/users/{accountId}/npCommunicationIds/{npCommunicationId}/trophyGroups
+    https://m.np.playstation.com/api/trophy/v1/users/{accountId}/npCommunicationIds/{npCommunicationId}/trophyGroups
 
 A request to this URL will retrieve a summary of the trophies earned for a user broken down by trophy group within a title. A title can have multiple groups of trophies (a `default` group which all titles have, and additional groups named `001` incrementing for each additional group).
 
@@ -824,7 +821,7 @@ This endpoint returns the earned summary of the title and its trophy groups only
 
 **Example 1 - Summary of trophies earned by trophy group for the authenticating account in PS5 title ASTRO’s PLAYROOM**
 
-    https://m.np.playstation.net/api/trophy/v1/users/me/npCommunicationIds/NPWR20188_00/trophyGroups
+    https://m.np.playstation.com/api/trophy/v1/users/me/npCommunicationIds/NPWR20188_00/trophyGroups
 
 ```json
 {
@@ -866,12 +863,12 @@ This endpoint returns the earned summary of the title and its trophy groups only
 ```
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/npCommunicationIds/NPWR20188_00/trophyGroups" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/npCommunicationIds/NPWR20188_00/trophyGroups" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 
 **Example 2 - Summary of trophies earned by trophy group for another PSN account with accountId _0000000000000000000_ in PS4 title RESIDENT EVIL 5**
 
-    https://m.np.playstation.net/api/trophy/v1/users/0000000000000000000/npCommunicationIds/NPWR10600_00/trophyGroups?npServiceName=trophy
+    https://m.np.playstation.com/api/trophy/v1/users/0000000000000000000/npCommunicationIds/NPWR10600_00/trophyGroups?npServiceName=trophy
 
 ```json
 {
@@ -934,11 +931,11 @@ Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/npCo
 ```
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/0000000000000000000/npCommunicationIds/NPWR10600_00/trophyGroups?npServiceName=trophy" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/0000000000000000000/npCommunicationIds/NPWR10600_00/trophyGroups?npServiceName=trophy" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 ### Trophy Title Summary for Specific Title ID
 
-    https://m.np.playstation.net/api/trophy/v1/users/{accountId}/titles/trophyTitles?npTitleIds={titleId}
+    https://m.np.playstation.com/api/trophy/v1/users/{accountId}/titles/trophyTitles?npTitleIds={titleId}
 
 A request to this URL will retrieve a summary of the trophies earned by a user for specific titles.
 
@@ -1136,7 +1133,7 @@ Now make a request to one of the API URLs using `Invoke-RestMethod`. This will o
 An example to request the authenticating accounts trophy title list and output the original JSON response. A number of other examples are included in the documentation above.
 
 ```powershell
-Invoke-RestMethod -Uri "https://m.np.playstation.net/api/trophy/v1/users/me/trophyTitles" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
 ## Obtaining an Authentication Token
 
