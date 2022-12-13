@@ -1150,7 +1150,14 @@ function Get-AuthenticationToken {
     return
   }
 
-  $url = "https://ca.account.sony.com/api/authz/v3/oauth/authorize?access_type=offline&client_id=ac8d161a-d966-4728-b0ea-ffec22f69edc&redirect_uri=com.playstation.PlayStationApp%3A%2F%2Fredirect&response_type=code&scope=psn%3Amobile.v1%20psn%3Aclientapp"
+  $params = @(
+    "access_type=offline",
+    "client_id=09515159-7237-4370-9b40-3806e67c0891",
+    "response_type=code",
+    "scope=psn:mobile.v2.core psn:clientapp",
+    "redirect_uri=com.scee.psxandroid.scecompcall://redirect"
+  )
+  $url = "https://ca.account.sony.com/api/authz/v3/oauth/authorize?$($params -join "&")"
 
   try {
     $result = Invoke-WebRequest -Uri $url -Headers @{
@@ -1168,7 +1175,7 @@ function Get-AuthenticationToken {
 
   $body = @{
     code=$query['code']
-    redirect_uri="com.playstation.PlayStationApp://redirect"
+    redirect_uri="com.scee.psxandroid.scecompcall://redirect"
     grant_type="authorization_code"
     token_format="jwt"
   }
@@ -1178,7 +1185,7 @@ function Get-AuthenticationToken {
 
   try {
     $result = Invoke-WebRequest -Method POST -Uri $url -body $body -ContentType $ContentType -Headers @{
-      "Authorization"="Basic YWM4ZDE2MWEtZDk2Ni00NzI4LWIwZWEtZmZlYzIyZjY5ZWRjOkRFaXhFcVhYQ2RYZHdqMHY="
+      "Authorization"="Basic MDk1MTUxNTktNzIzNy00MzcwLTliNDAtMzgwNmU2N2MwODkxOnVjUGprYTV0bnRCMktxc1A="
     }
     $token = ConvertTo-SecureString ($result.Content | ConvertFrom-Json).access_token -AsPlainText
     if ($token) {
