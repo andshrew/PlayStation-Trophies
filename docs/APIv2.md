@@ -939,9 +939,11 @@ Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/0000000
 
 A request to this URL will retrieve a summary of the trophies earned by a user for specific titles.
 
-The `titleId` can be a single title ID, or it can be a comma seperated list of title IDs (%2C when used in a URL). Every title has an ID assigned to it with these typically starting "CUSA" for PS4 titles and "PPSA" for PS5 titles.
+The `titleId` can be a single title ID, or it can be a comma separated list of title IDs (%2C when used in a URL). Every title has an ID assigned to it with these typically starting "CUSA" for PS4 titles and "PPSA" for PS5 titles.
 
 The numeric `accountId` can be that of any PSN account for which the authenticating account has permissions to view the trophy list. When querying the titles associated with the authenticating account the numeric `accountId` can be substituted with `me`.
+
+If optional parameter `includeNotEarnedTrophyIds` is included and set to `true` then the response will contain a list of IDs for the individual trophies which the user has not earned for each title ID queried. This functionality was added to the endpoint post release, most likely early 2023.
 
 This endpoint can be used as a way of linking the `npCommunicationId` of a Trophy Set to a titles `npTitleId`, but as with the other user based endpoints in this version of the API you will only get a useful response back if the account you are querying against has played the title.
 
@@ -954,20 +956,21 @@ This endpoint can be used as a way of linking the `npCommunicationId` of a Troph
 | Parameter | Type | Example Value | Description | Required |
 | --- | --- | --- | --- | --- |
 | accountId | String | `me`<br>`12340..` | The account whos trophy list is being accessed<br>Use `me` for the authenticating account | Yes
+| includeNotEarnedTrophyIds | Boolean | `true` | The response will include the IDs for the individual trophies which have not been earned | No
 | npTitleIds | String | `PPSA01284_00`<br>`PPSA01284_00%2CCUSA09171_00` | Unique ID of the title<br>Limit of 5 per request | Yes
 
 #### Output JSON Response <!-- {docsify-ignore} -->
 
 | Attribute | Type | Example Value | Description |
 | --- | --- |--- | --- |
-| titles | [JSON object](#trophy-title-summary-for-specific-title-id-titles-json-objects) | | Individual object for each title returned
+| titles | Array<br>[JSON object](#trophy-title-summary-for-specific-title-id-titles-json-objects) | | Individual object for each title returned
 
 #### titles JSON objects <!-- {docsify-ignore} --> :id=trophy-title-summary-for-specific-title-id-titles-json-objects
 
 | Attribute | Type | Example Value | Description |
 | --- | --- |--- | --- |
 | npTitleId | String | `PPSA01284_00` | npTitleId of the title
-| trophyTitles | [JSON object](#trophy-title-summary-for-specific-title-id-trophyTitles-json-objects) | | Trophy set associated with the title<br>**This will only be returned if the queried account has played the title (and allowed their trophies to sync) at least once**
+| trophyTitles | Array<br>[JSON object](#trophy-title-summary-for-specific-title-id-trophyTitles-json-objects) | | Trophy set associated with the title<br>**This will only be returned if the queried account has played the title (and allowed their trophies to sync) at least once**
 
 #### trophyTitles JSON objects <!-- {docsify-ignore} --> :id=trophy-title-summary-for-specific-title-id-trophyTitles-json-objects
 
@@ -979,10 +982,11 @@ This endpoint can be used as a way of linking the `npCommunicationId` of a Troph
 | trophyTitleDetail | String | `RESIDENT EVIL 5 Trophy Set` | Title description<br>**PS3, PS4 and PS Vita titles only**
 | trophyTitleIconUrl | String | `https://...` | URL of the icon for the title
 | hasTrophyGroups | Boolean | `true` | True if the title has multiple groups of trophies (eg. DLC trophies which are separate from the main trophy list)
-| rarestTrophies | [JSON object](#trophy-title-summary-for-specific-title-id-rarestTrophies-json-objects) | | Individual object for each trophy<br>Returns the trophy where `earned` is `true` with the lowest `trophyEarnedRate`.<br>**Returns nothing if no trophies are earned**
+| rarestTrophies | Array<br>[JSON object](#trophy-title-summary-for-specific-title-id-rarestTrophies-json-objects) | | Individual object for each trophy<br>Returns the trophy where `earned` is `true` with the lowest `trophyEarnedRate`<br>Can return more than one if the earned rate is shared by multiple trophies<br>**Returns nothing if no trophies are earned**
 | progress | Numeric | 100 | Percentage of trophies earned for the title
 | earnedTrophies | [JSON object](#trophy-title-summary-for-specific-title-id-earnedTrophies-json-objects) | | Number of trophies for the title which have been earned by type
 | definedTrophies | [JSON object](#trophy-title-summary-for-specific-title-id-definedTrophies-json-objects) | | Number of trophies for the title by type
+| notEarnedTrophyIds | Array<br>Numeric | `[ 42, 43 ]` | Ids for trophies which have not been earned<br>**Returns nothing if all trophies are earned**<br>**Only returned if parameter `includeNotEarnedTrophyIds` is `true`**
 | lastUpdatedDateTime | Date (UTC) | `2021-06-20T12:46:34Z` | Date most recent trophy earned for the title
 
 #### rarestTrophies JSON objects <!-- {docsify-ignore} --> :id=trophy-title-summary-for-specific-title-id-rarestTrophies-json-objects
@@ -1118,6 +1122,123 @@ This endpoint can be used as a way of linking the `npCommunicationId` of a Troph
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
 Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?npTitleIds=CUSA09171_00%2CPPSA01284_00%2CPPSA04874_00" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+```
+
+**Example 2 - Summary of trophy titles associated with title IDs PPSA01284_00 (Returnal, PS5), CUSA09171_00 (RESIDENT EVIL 2, PS4) and PPSA04874_00 (Apex Legends, PS5) for the authenticating account, with `includeNotEarnedTrophyIds` set to `true`**
+
+    https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?includeNotEarnedTrophyIds=true&npTitleIds=CUSA09171_00%2CPPSA01284_00%2CPPSA04874_00
+
+```json
+{
+  "titles": [
+    {
+      "npTitleId": "PPSA01284_00",
+      "trophyTitles": [
+        {
+          "npServiceName": "trophy2",
+          "npCommunicationId": "NPWR20004_00",
+          "trophyTitleName": "Returnal",
+          "trophyTitleIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR20004_00/f60fd55f-a01f-4274-a865-d8356dc0fd9c.png",
+          "hasTrophyGroups": true,
+          "rarestTrophies": [
+            {
+              "trophyId": 34,
+              "trophyHidden": true,
+              "trophyType": "bronze",
+              "trophyName": "Destroyer",
+              "trophyDetail": "Kill 100 Hostiles with Disgorgers",
+              "trophyIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR20004_00/c468768c-a6c3-4ced-9f0f-e75d5a9a36c2.png",
+              "trophyRare": 0,
+              "trophyEarnedRate": "1.3",
+              "earned": true,
+              "earnedDateTime": "2022-08-14T14:19:02Z"
+            },
+            {
+              "trophyId": 37,
+              "trophyHidden": true,
+              "trophyType": "gold",
+              "trophyName": "Find Release",
+              "trophyDetail": "Gain a moment of peace",
+              "trophyIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR20004_00/3270f141-9f24-4d86-b7b3-c77654e47631.png",
+              "trophyRare": 0,
+              "trophyEarnedRate": "1.3",
+              "earned": true,
+              "earnedDateTime": "2022-08-14T19:43:38Z"
+            }
+          ],
+          "progress": 100,
+          "earnedTrophies": {
+            "bronze": 23,
+            "silver": 6,
+            "gold": 8,
+            "platinum": 1
+          },
+          "definedTrophies": {
+            "bronze": 23,
+            "silver": 6,
+            "gold": 8,
+            "platinum": 1
+          },
+          "notEarnedTrophyIds": [],
+          "lastUpdatedDateTime": "2022-08-14T19:43:39Z"
+        }
+      ]
+    },
+    {
+      "npTitleId": "CUSA09171_00",
+      "trophyTitles": [
+        {
+          "npServiceName": "trophy",
+          "npCommunicationId": "NPWR15179_00",
+          "trophyTitleName": "RESIDENT EVIL 2",
+          "trophyTitleDetail": "RESIDENT EVIL 2",
+          "trophyTitleIconUrl": "https://image.api.playstation.com/trophy/np/NPWR15179_00_004E1F39C12A2C6264BA2A0546D9234F56889DCC5F/BAFEDE2151A73E1FAFE59B8575EC1CF99F6A75F6.PNG",
+          "hasTrophyGroups": true,
+          "rarestTrophies": [
+            {
+              "trophyId": 0,
+              "trophyHidden": false,
+              "trophyType": "platinum",
+              "trophyName": "Raccoon City Native",
+              "trophyDetail": "Obtain all trophies.",
+              "trophyIconUrl": "https://image.api.playstation.com/trophy/np/NPWR15179_00_004E1F39C12A2C6264BA2A0546D9234F56889DCC5F/F957C0C5B0D2B63EBE1BB072B521E2B5A24D2986.PNG",
+              "trophyRare": 0,
+              "trophyEarnedRate": "3.4",
+              "earned": true,
+              "earnedDateTime": "2020-10-18T15:23:07Z"
+            }
+          ],
+          "progress": 95,
+          "earnedTrophies": {
+            "bronze": 29,
+            "silver": 9,
+            "gold": 4,
+            "platinum": 1
+          },
+          "definedTrophies": {
+            "bronze": 30,
+            "silver": 10,
+            "gold": 4,
+            "platinum": 1
+          },
+          "notEarnedTrophyIds": [
+            42,
+            43
+          ],
+          "lastUpdatedDateTime": "2020-10-18T15:23:11Z"
+        }
+      ]
+    },
+    {
+      "npTitleId": "PPSA04874_00",
+      "trophyTitles": []
+    }
+  ]
+}
+```
+Executing this example using Powershell - see [Querying the API](#powershell-7)
+```powershell
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?includeNotEarnedTrophyIds=true&npTitleIds=CUSA09171_00%2CPPSA01284_00%2CPPSA04874_00" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
 ```
 
 # Querying the API
