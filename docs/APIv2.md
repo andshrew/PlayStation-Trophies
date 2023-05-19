@@ -1241,6 +1241,519 @@ Executing this example using Powershell - see [Querying the API](#powershell-7)
 Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?includeNotEarnedTrophyIds=true&npTitleIds=CUSA09171_00%2CPPSA01284_00%2CPPSA04874_00" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
 ```
 
+## PS+ Game Help
+
+The updated trophy system which launched with the PlayStation 5 included a new PlayStation Plus subscriber benefit called Game Help. It provides tips and guides on how to complete specific trophies. This information was initially only accessible via the trophy list or activity cards on the console itself, however the PlayStation App was updated in May 2023 (v23.5.0) to include support for accessing the Game Help associated with trophies (activity card Game Help remains only accessible on console).
+
+There are two main endpoints for this function:
+ * Request a list of trophies for a specific title which have Game Help available (accessible from all accounts).
+ * Request the Game Help that is available for a specific trophy (only accessible to accounts which have a PS+ subscription).
+
+The Game Help can come in the form of written descriptions for how to earn a trophy, or it can be in the form of a video guide. When a video is used the API response includes the URL to a HLS video stream, along with a short lived access token granting access to the file. The stream includes resolutions up to 1080p. It can be viewed in applications such as VLC media player, or downloaded with applications like ffmpeg or JDownloader 2.
+
+### Retrieve Trophies with Game Help available for a Title
+
+    https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetHintAvailability
+
+Requests to this URL will retrieve a list of the trophies for a title which have Game Help available.
+
+You can check against all trophies, or you can limit the request to only check against specific trophy IDs.
+
+#### Input Parameters <!-- {docsify-ignore} -->
+
+| Parameter | Value 
+| --- | --- 
+| operationName | `metGetHintAvailability`
+| variables | `{"npCommId":"NPWR20188_00"}`
+| extensions | `{"persistedQuery":{"version":1,"sha256Hash":"71bf26729f2634f4d8cca32ff73aaf42b3b76ad1d2f63b490a809b66483ea5a7"}}`
+
+| Property | Parent Parameter | Type | Example Values | Description | Required
+| --- | --- | --- | --- | --- | --- 
+| npCommId | variables | String | `NPWR20188_00` | Unique ID of the title | Yes
+| trophyIds | variables | Array<br>String | `["0", "1"]` | Limit request to these specific trophy IDs | No
+
+#### Output JSON Response <!-- {docsify-ignore} -->
+
+A JSON response is returned. The following are returned under the `data` attribute.
+
+| Attribute | Type | Example Value | Description
+| --- | --- | --- | ---
+| hintAvailabilityRetrieve | [JSON object `HintAvailability`](#game-help-hint-availability-json-objects) | 
+
+#### HintAvailability JSON objects <!-- {docsify-ignore} --> :id=game-help-hint-availability-json-objects
+
+| Attribute | Type | Example Value | Description
+| --- | --- | --- | ---
+| __typename | String | `HintAvailability` |
+| trophies | Array<br>[JSON object `TrophyInfoWithHintAvailable`](#game-help-trophy-info-with-hint-available-json-objects) | | Contains a list of trophies which support Game Help<br>Will return an empty array if no trophies support Game Help
+
+#### TrophyInfoWithHintAvailable JSON objects <!-- {docsify-ignore} --> :id=game-help-trophy-info-with-hint-available-json-objects
+
+| Attribute | Type | Example Value | Description
+| --- | --- | --- | ---
+| __typename | String | `TrophyInfoWithHintAvailable` |
+| helpType | String | `HINT` | Type of Game Help
+| id | String | `NPWR20188_00::18` | Combination of the title ID and individual trophy ID
+| trophyId | String | `18` | Trophy ID
+| udsObjectId | String | `GATCHA_SECRET`<br>`0001` | Game Help ID
+
+#### Example URLs and Responses <!-- {docsify-ignore} -->
+
+**Example 1 - Retrieve all trophies with Game Help available for PS5 title ASTRO’s PLAYROOM**
+
+    https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetHintAvailability&variables={"npCommId":"NPWR20188_00"}&extensions={"persistedQuery":{"version":1,"sha256Hash":"71bf26729f2634f4d8cca32ff73aaf42b3b76ad1d2f63b490a809b66483ea5a7"}}
+
+```json
+{
+  "data": {
+    "hintAvailabilityRetrieve": {
+      "__typename": "HintAvailability",
+      "trophies": [
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::18",
+          "trophyId": "18",
+          "udsObjectId": "GATCHA_SECRET"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::21",
+          "trophyId": "21",
+          "udsObjectId": "PLAZA_SEND_BOT_FLYING"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::22",
+          "trophyId": "22",
+          "udsObjectId": "PLAZA_WALK_AROUND_BOT"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::23",
+          "trophyId": "23",
+          "udsObjectId": "LABO_PUNCH_AND_SPIN_PS2LOGO"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::25",
+          "trophyId": "25",
+          "udsObjectId": "LABO_LOOK_INTO_PSVR"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::26",
+          "trophyId": "26",
+          "udsObjectId": "LABO_RIDE_AIM_CONTROLLER"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::27",
+          "trophyId": "27",
+          "udsObjectId": "LABO_WALK_HOME_ICON"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::28",
+          "trophyId": "28",
+          "udsObjectId": "LABO_OPEN_PS1"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::29",
+          "trophyId": "29",
+          "udsObjectId": "COOLING_JUGGLE_BALL_WITH_FROG"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::30",
+          "trophyId": "30",
+          "udsObjectId": "COOLING_DIVED_FROM_DIVING_BOARD"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::31",
+          "trophyId": "31",
+          "udsObjectId": "COOLING_JUMP_IN_FOUNTAIN"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::32",
+          "trophyId": "32",
+          "udsObjectId": "COOLING_JUMP_ATTACK"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::33",
+          "trophyId": "33",
+          "udsObjectId": "MEMORY_AWAY_FROM_RAIN"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::34",
+          "trophyId": "34",
+          "udsObjectId": "MEMORY_HIT_FLYING_CAN"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::35",
+          "trophyId": "35",
+          "udsObjectId": "MEMORY_GOT_STRIKE"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::36",
+          "trophyId": "36",
+          "udsObjectId": "GPU_DEFLECT_SPTR_BLT_WITH_ARROW"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::37",
+          "trophyId": "37",
+          "udsObjectId": "GPU_MADE_HUGE_SNOWBALL"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::38",
+          "trophyId": "38",
+          "udsObjectId": "GPU_CATCH_THE_CLIFF_AFTER_FALL"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::39",
+          "trophyId": "39",
+          "udsObjectId": "GPU_HIT_RABBIT_WITH_ARROW"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::40",
+          "trophyId": "40",
+          "udsObjectId": "SSD_SPIN_WHILE_SHOOT_MACHINE_GUN"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::42",
+          "trophyId": "42",
+          "udsObjectId": "LABO_PUNCH_COMPANY_LOGO"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::45",
+          "trophyId": "45",
+          "udsObjectId": "DAY1__GRAVITY_DAZE"
+        }
+      ]
+    }
+  }
+}
+```
+
+Executing this example using Powershell - see [Querying the API](#powershell-7)
+```powershell
+Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetHintAvailability&variables={"npCommId":"NPWR20188_00"}&extensions={"persistedQuery":{"version":1,"sha256Hash":"71bf26729f2634f4d8cca32ff73aaf42b3b76ad1d2f63b490a809b66483ea5a7"}}' -Authentication Bearer -Token $token | ConvertTo-Json -Depth 5
+```
+
+**Example 2 - Check if trophies 18, 19 and 21 from PS5 title ASTRO’s PLAYROOM have Game Help available**
+
+    https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetHintAvailability&variables={"npCommId":"NPWR20188_00","trophyIds":["18", "19", "21"]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"71bf26729f2634f4d8cca32ff73aaf42b3b76ad1d2f63b490a809b66483ea5a7"}}
+
+```json
+{
+  "data": {
+    "hintAvailabilityRetrieve": {
+      "__typename": "HintAvailability",
+      "trophies": [
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::18",
+          "trophyId": "18",
+          "udsObjectId": "GATCHA_SECRET"
+        },
+        {
+          "__typename": "TrophyInfoWithHintAvailable",
+          "helpType": "HINT",
+          "id": "NPWR20188_00::21",
+          "trophyId": "21",
+          "udsObjectId": "PLAZA_SEND_BOT_FLYING"
+        }
+      ]
+    }
+  }
+}
+```
+
+Executing this example using Powershell - see [Querying the API](#powershell-7)
+```powershell
+Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetHintAvailability&variables={"npCommId":"NPWR20188_00","trophyIds":["18", "19", "21"]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"71bf26729f2634f4d8cca32ff73aaf42b3b76ad1d2f63b490a809b66483ea5a7"}}' -Authentication Bearer -Token $token | ConvertTo-Json -Depth 5
+```
+
+### Retrieve Game Help for a Trophy
+
+    https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips
+
+!> The authenticating PSN account must have a PS+ subscription to access this endpoint
+
+Requests to this URL will retrieve the Game Help which is available for a specific trophy.
+
+An array of trophies can be submitted within the `variables` parameter to retrieve multiple at once.
+
+#### Input Parameters <!-- {docsify-ignore} -->
+
+| Parameter | Value 
+| --- | --- 
+| operationName | `metGetTips`
+| variables | `{"npCommId":"NPWR20188_00","trophies":{"trophyId":"18","udsObjectId":"GATCHA_SECRET","helpType":"HINT"}}`
+| extensions | `{"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}`
+
+| Property | Parent Parameter | Type | Example Values | Description | Required
+| --- | --- | --- | --- | --- | --- 
+| npCommId | variables | String | `NPWR20188_00` | Unique ID of the title the trophy belongs to | Yes
+| trophyId | variables | String | `18` | ID of the trophy | Yes
+| udsObjectId | variables | String | `GATCHA_SECRET` | ID of the Game Help | Yes
+| helpType | variables | String | `helpType` | Type of Game Help | Yes
+
+#### Output JSON Response <!-- {docsify-ignore} -->
+
+A JSON response is returned. The following are returned under the `data` attribute.
+
+| Attribute | Type | Example Value | Description
+| --- | --- | --- | ---
+| tipsRetrieve | [JSON object `Tips`](#game-help-tips-json-objects) | 
+
+#### Tips JSON objects <!-- {docsify-ignore} --> :id=game-help-tips-json-objects
+
+| Attribute | Type | Example Value | Description
+| --- | --- | --- | ---
+| __typename | String | `Tips` |
+| hasAccess | Boolean | `true` | Returns `false` if authenticating account does not have a PS+ subscription
+| trophies | Array<br>[JSON object `TrophyTip`](#game-help-trophy-tip-json-objects) | | Contains the requested trophies
+
+#### TrophyTip JSON objects <!-- {docsify-ignore} --> :id=game-help-trophy-tip-json-objects
+
+| Attribute | Type | Example Value | Description
+| --- | --- | --- | ---
+| __typename | String | `TrophyTip` |
+| groups | Array<br>[JSON object `TipGroup`](#game-help-tip-group-json-objects) | 
+| id | String | `NPWR20188_00::18` | Combination of the title ID and individual trophy ID
+| totalGroupCount | Numeric | `1` |
+| trophyId | String | `18` | ID of the trophy
+
+#### TipGroup JSON objects <!-- {docsify-ignore} --> :id=game-help-tip-group-json-objects
+
+| Attribute | Type | Example Value | Description
+| --- | --- | --- | ---
+| __typename | String | `TipGroup` |
+| groupId | Unknown | `null` |
+| groupName | Unknown | `null` |
+| tipContents | Array<br>[JSON object `TipContent`](#game-help-tip-content-json-objects) | | Contains the Game Help content<br>Should the help contain multiple steps each is returned as a separate `TipContent` object
+
+#### TipContent JSON objects <!-- {docsify-ignore} --> :id=game-help-tip-content-json-objects
+
+| Attribute | Type | Example Value | Description
+| --- | --- | --- | ---
+| __typename | String | `TipContent` |
+| description | String | `The gatcha prize you seek is inside a silver ball, but which one? You just have to keep playing to find out.` |
+| displayName | String | `Since 1995` |
+| mediaId | String | `psn534f6d378d6841939cd709202c46a220` |
+| mediaType | String | `VIDEO` |
+| mediaUrl | String | `https://gms-ght.playstation-cloud.com/2/417ff4e103ec31d38e559f87ff12e53e131e1d2c/psn534f6d378d6841939cd709202c46a220/private/video/master_playlist.m3u8?token=redacted` |
+| tipId | String | `NPWR20188_00__GATCHA_SECRET_H1` |
+
+#### Example URLs and Responses <!-- {docsify-ignore} -->
+
+**Example 1 - Retrieve the Game Help for trophy 18 in PS5 title ASTRO’s PLAYROOM**
+
+    https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20188_00","trophies":[{"trophyId":"18","udsObjectId":"GATCHA_SECRET","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}
+
+```json
+{
+  "data": {
+    "tipsRetrieve": {
+      "__typename": "Tips",
+      "hasAccess": true,
+      "trophies": [
+        {
+          "__typename": "TrophyTip",
+          "groups": [
+            {
+              "__typename": "TipGroup",
+              "groupId": null,
+              "groupName": null,
+              "tipContents": [
+                {
+                  "__typename": "TipContent",
+                  "description": "The gatcha prize you seek is inside a silver ball, but which one? You just have to keep playing to find out. ",
+                  "displayName": "Since 1995",
+                  "mediaId": "psn534f6d378d6841939cd709202c46a220",
+                  "mediaType": "VIDEO",
+                  "mediaUrl": "https://gms-ght.playstation-cloud.com/2/417ff4e103ec31d38e559f87ff12e53e131e1d2c/psn534f6d378d6841939cd709202c46a220/private/video/master_playlist.m3u8?token=redacted",
+                  "tipId": "NPWR20188_00__GATCHA_SECRET_H1"
+                }
+              ]
+            }
+          ],
+          "id": "NPWR20188_00::18",
+          "totalGroupCount": 1,
+          "trophyId": "18"
+        }
+      ]
+    }
+  }
+}
+```
+
+Executing this example using Powershell - see [Querying the API](#powershell-7)
+```powershell
+Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20188_00","trophies":[{"trophyId":"18","udsObjectId":"GATCHA_SECRET","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}' -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
+```
+
+**Example 2 - Retrieve the Game Help for a trophy where the help includes multiple steps to complete**
+
+    https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20842_00","trophies":[{"trophyId":"21","udsObjectId":"Weapon_to_Level_5","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}
+
+```json
+{
+  "data": {
+    "tipsRetrieve": {
+      "__typename": "Tips",
+      "hasAccess": true,
+      "trophies": [
+        {
+          "__typename": "TrophyTip",
+          "groups": [
+            {
+              "__typename": "TipGroup",
+              "groupId": null,
+              "groupName": null,
+              "tipContents": [
+                {
+                  "__typename": "TipContent",
+                  "description": "To max out a weapon to level five, you'll want to use it on enemies at every possible opportunity. AoE (Area of Effect) weapons are typically the fastest to level, as they can hit multiple enemies at once, earning you more XP per ammo refill. Make a habit of kiting enemies into groups to get the most out of this strategy. ",
+                  "displayName": "HIGH FIVE",
+                  "mediaId": "psncbc9ffb8d893459688563506d4a1b78e",
+                  "mediaType": "VIDEO",
+                  "mediaUrl": "https://gms-ght.playstation-cloud.com/2/b3375403cf98e61102c97ebfba134389300aa653/psncbc9ffb8d893459688563506d4a1b78e/private/video/master_playlist.m3u8?token=redacted",
+                  "tipId": "NPWR20842_00__21_Weapon_to_Level_5_h1"
+                },
+                {
+                  "__typename": "TipContent",
+                  "description": "Always upgrade your weapon with Raritanium as it levels; the increased stats will usually make it gain XP faster. ",
+                  "displayName": "INCREASED STATS",
+                  "mediaId": "psn7e4553c0088e4cf09101f12d1dcb609b",
+                  "mediaType": "VIDEO",
+                  "mediaUrl": "https://gms-ght.playstation-cloud.com/3/b3375403cf98e61102c97ebfba134389300aa653/psn7e4553c0088e4cf09101f12d1dcb609b/private/video/master_playlist.m3u8?token=redacted",
+                  "tipId": "NPWR20842_00__21_Weapon_to_Level_5_h2"
+                }
+              ]
+            }
+          ],
+          "id": "NPWR20842_00::21",
+          "totalGroupCount": 1,
+          "trophyId": "21"
+        }
+      ]
+    }
+  }
+}
+```
+
+Executing this example using Powershell - see [Querying the API](#powershell-7)
+```powershell
+Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20842_00","trophies":[{"trophyId":"21","udsObjectId":"Weapon_to_Level_5","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}' -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
+```
+
+**Example 3 - Retrieve the Game Help for trophy 18 and 45 in PS5 title ASTRO’s PLAYROOM**
+
+    https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20188_00","trophies":[{"trophyId":"18","udsObjectId":"GATCHA_SECRET","helpType":"HINT"}, {"trophyId":"45","udsObjectId":"DAY1__GRAVITY_DAZE","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}
+
+```json
+{
+  "data": {
+    "tipsRetrieve": {
+      "__typename": "Tips",
+      "hasAccess": true,
+      "trophies": [
+        {
+          "__typename": "TrophyTip",
+          "groups": [
+            {
+              "__typename": "TipGroup",
+              "groupId": null,
+              "groupName": null,
+              "tipContents": [
+                {
+                  "__typename": "TipContent",
+                  "description": "In CPU Plaza, punch ten bots to get them to follow you. Lead the bot group to the glass dome in the center of CPU Plaza and punch the glass to tease the CPU Chip.",
+                  "displayName": "You Kat get me",
+                  "mediaId": "psnea251771293d407fa81bf0fc7fb0e2da",
+                  "mediaType": "VIDEO",
+                  "mediaUrl": "https://gms-ght.playstation-cloud.com/2/417ff4e103ec31d38e559f87ff12e53e131e1d2c/psnea251771293d407fa81bf0fc7fb0e2da/private/video/master_playlist.m3u8?token=redacted",
+                  "tipId": "NPWR20188_00__DAY1__GRAVITY_DAZE_H1"
+                }
+              ]
+            }
+          ],
+          "id": "NPWR20188_00::45",
+          "totalGroupCount": 1,
+          "trophyId": "45"
+        },
+        {
+          "__typename": "TrophyTip",
+          "groups": [
+            {
+              "__typename": "TipGroup",
+              "groupId": null,
+              "groupName": null,
+              "tipContents": [
+                {
+                  "__typename": "TipContent",
+                  "description": "The gatcha prize you seek is inside a silver ball, but which one? You just have to keep playing to find out. ",
+                  "displayName": "Since 1995",
+                  "mediaId": "psn534f6d378d6841939cd709202c46a220",
+                  "mediaType": "VIDEO",
+                  "mediaUrl": "https://gms-ght.playstation-cloud.com/2/417ff4e103ec31d38e559f87ff12e53e131e1d2c/psn534f6d378d6841939cd709202c46a220/private/video/master_playlist.m3u8?token=redacted",
+                  "tipId": "NPWR20188_00__GATCHA_SECRET_H1"
+                }
+              ]
+            }
+          ],
+          "id": "NPWR20188_00::18",
+          "totalGroupCount": 1,
+          "trophyId": "18"
+        }
+      ]
+    }
+  }
+}
+```
+
+Executing this example using Powershell - see [Querying the API](#powershell-7)
+```powershell
+Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20188_00","trophies":[{"trophyId":"18","udsObjectId":"GATCHA_SECRET","helpType":"HINT"}, {"trophyId":"45","udsObjectId":"DAY1__GRAVITY_DAZE","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}' -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
+```
+
 # Querying the API
 
 ## Powershell 7
