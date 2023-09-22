@@ -602,6 +602,15 @@ The numeric `accountId` can be that of any PSN account for which the authenticat
 | 9 | Gold | 800 - 998 |
 | 10 | Platinum | 999 |
 
+The API also returns the total point value of the trophies which the user has earned. The actual point value of each trophy grade has never been officially revealed, but they have been reverse engineered by [psnprofiles.com user NathanielJohn](https://forum.psnprofiles.com/topic/96498-new-platinum-trophy-value-and-trophy-level-formula/), and are copied here for reference.
+
+| Grade | Point Value |
+| --- | --- |
+| Bronze | 15 |
+| Silver | 30 |
+| Gold | 90 |
+| Platinum | 300 |
+
 #### Input Parameters <!-- {docsify-ignore} -->
 
 | Parameter | Type | Example Value | Description | Required |
@@ -613,8 +622,11 @@ The numeric `accountId` can be that of any PSN account for which the authenticat
 | Attribute | Type | Example Value | Description |
 | --- | --- |--- | --- |
 | accountId | String | `12340..` | The ID of the account being accessed
-| trophyLevel | Numeric | `403` | The overall trophy level
-| progress | Numeric | `67` | Percentage process towards the next trophy level
+| trophyLevel | Numeric | `437` | The overall trophy level
+| trophyPoint | Numeric | `200430` | The total point value of trophies earned
+| trophyLevelBasePoint | Numeric | `199890` | Points required to reach the current trophy level
+| trophyLevelNextPoint | Numeric | `201240` | Points required to reach the next trophy level
+| progress | Numeric | `40` | Percentage process towards the next trophy level
 | tier | Numeric | `5` | The tier this trophy level is in
 | earnedTrophies | [JSON object](#overall-summary-earnedtrophies-json-objects) | | Number of trophies which have been earned by type
 
@@ -622,10 +634,10 @@ The numeric `accountId` can be that of any PSN account for which the authenticat
 
 | Attribute | Type | Example Value | Description |
 | --- | --- |--- | --- |
-| bronze | Numeric | `5225` | Total bronze trophies earned
-| silver | Numeric | `1116` | Total silver trophies earned
-| gold | Numeric | `355` | Total gold trophies earned
-| platinum | Numeric | `37` | Total platinum trophies earned
+| bronze | Numeric | `6212` | Total bronze trophies earned
+| silver | Numeric | `1450` | Total silver trophies earned
+| gold | Numeric | `525` | Total gold trophies earned
+| platinum | Numeric | `55` | Total platinum trophies earned
 
 #### Example URLs and Responses <!-- {docsify-ignore} -->
 
@@ -636,14 +648,17 @@ The numeric `accountId` can be that of any PSN account for which the authenticat
 ```json
 {
   "accountId": "0000000000000000000",
-  "trophyLevel": 403,
-  "progress": 67,
+  "trophyLevel": 437,
+  "trophyPoint": 200430,
+  "trophyLevelBasePoint": 199890,
+  "trophyLevelNextPoint": 201240,
+  "progress": 40,
   "tier": 5,
   "earnedTrophies": {
-    "bronze": 5225,
-    "silver": 1116,
-    "gold": 355,
-    "platinum": 37
+    "bronze": 6212,
+    "silver": 1450,
+    "gold": 525,
+    "platinum": 55
   }
 }
 ```
