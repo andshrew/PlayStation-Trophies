@@ -9,7 +9,18 @@ These APIs have been documented by by capturing the requests made by the https:/
 * [PlayStation Trophies API v1](APIv1.md)
     * Supported platforms PS4, PS3 and PS Vita
 * [PlayStation Trophies API v2](APIv2.md)
-    * Supported platforms PS5, PS4, PS3 and PS Vita
+    * Supported platforms PS5, PC, PS4, PS3 and PS Vita
+
+## Miscellaneous API Endpoints <!-- {docsify-ignore} -->
+
+This section of the documentation contains documentation on additional API endpoints not strictly related to the trophy system, but which may be of interest.
+
+* [Miscellaneous API Endpoints](/misc/)
+    * [User Profile](/misc/UserProfile)
+    * [User Games](/misc/UserGames)
+    * [Console Information](/misc/Console)
+    * [PlayStation Store](/misc/Store)
+    * [Search](/misc/Search)
 
 ## Additional Thanks <!-- {docsify-ignore} -->
 

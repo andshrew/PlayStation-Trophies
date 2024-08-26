@@ -2,7 +2,7 @@
 
 With the release of the PlayStation 5 Sony has implemented a revised API for retrieving details of the trophies an account has earned.
 
-This revision of the API is the only way to retrieve trophies for PS5 titles. It is fully backwards compatible and capable for retrieving trophy data associated with tiles on legacy platforms (ie. PS3, PS4 and PS Vita).
+This revision of the API is the only way to retrieve trophies for PS5 and PC titles. It is fully backwards compatible and capable of retrieving trophy data associated with tiles on legacy platforms (ie. PS3, PS4 and PS Vita).
 
 ## Overview
 * Accessing the API requires authentication with a PSN account.
@@ -61,13 +61,13 @@ The results are presented in order of the `lastUpdatedDateTime` for the title, s
 
 | Attribute | Type | Example Response | Description |
 | --- | --- |--- | --- |
-| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 platform
+| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 or PC platform
 | npCommunicationId | String | `NPWR20188_00` | Unique ID of the title; later required for requesting detailed trophy information for this title
 | trophySetVersion | String | `01.40` | The current version of the trophy set
 | trophyTitleName | String | `ASTRO’s PLAYROOM` | Title name
 | trophyTitleDetail | String | `RESIDENT EVIL 5 Trophy Set` | Title description<br>**PS3, PS4 and PS Vita titles only**
 | trophyTitleIconUrl | String | `https://...` | URL of the icon for the title
-| trophyTitlePlatform | String | `PS5`<br>`PS4` | The platform this title belongs to. Some games have trophy sets which are shared between multiple platforms (ie. PS4,PSVITA). The platforms will be comma separated.
+| trophyTitlePlatform | String | `PS5`<br>`PS4` | The platform this title belongs to. Some games have trophy sets which are shared between multiple platforms (ie. PS4,PSVITA or PS5,PSPC). The platforms will be comma separated.
 | hasTrophyGroups | Boolean | `true` | True if the title has multiple groups of trophies (eg. DLC trophies which are separate from the main trophy list)
 | definedTrophies | [JSON object](#trophy-titles-definedTrophies-json-objects) | | Number of trophies for the title by type
 | progress | Numeric | 100 | Percentage of trophies earned for the title
@@ -219,7 +219,7 @@ A request to this URL will retrieve the individual trophy detail of a single - o
 | --- | --- | --- | --- | --- |
 | npCommunicationId | String | `NPWR20188_00` | Unique ID of the title | Yes
 | trophyGroupId | String | `all`<br>`default`<br>`001` | `all` to return all trophies for the title, otherwise restrict results to a specific trophy group | Yes
-| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 platform | No, unless title platform is PS3, PS4 or PS Vita then **must** be `trophy`
+| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 or PC platform | No, unless title platform is PS3, PS4 or PS Vita then **must** be `trophy`
 | limit | Numeric<br>**Min** 1<br>**Max** > 400<br>**Default** All trophies | `20` | Limit the number of trophies returned<br>*If no limit is specified all trophies will be returned* | No |
 | offset | Numeric<br>**Min** 0<br>**Max** `totalItemCount` - 1<br>**Default** 0 | `20` | Returns trophy data from this result onwards | No |
 
@@ -378,7 +378,7 @@ This endpoint returns the earned status of the trophy only and no additional des
 | accountId | String | `me`<br>`12340..` | The account whos trophy list is being accessed<br>Use `me` for the authenticating account | Yes
 | npCommunicationId | String | `NPWR20188_00` | Unique ID of the title | Yes
 | trophyGroupId | String | `all`<br>`default`<br>`001` | `all` to return all trophies for the title, otherwise restrict results to a specific trophy group | Yes
-| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 platform | No, unless title platform is PS3, PS4 or PS Vita then **must** be `trophy`
+| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 or PC platform | No, unless title platform is PS3, PS4 or PS Vita then **must** be `trophy`
 | limit | Numeric<br>**Min** 1<br>**Max** > 400<br>**Default** All trophies | `20` | Limit the number of trophies returned<br>*If no limit is specified all trophies will be returned* | No |
 | offset | Numeric<br>**Min** 0<br>**Max** `totalItemCount` - 1<br>**Default** 0 | `20` | Returns trophy data from this result onwards | No |
 
@@ -682,7 +682,7 @@ You can make a request to this URL for a specific title - using the unique `npCo
 | Parameter | Type | Example Value | Description | Required |
 | --- | --- | --- | --- | --- |
 | npCommunicationId | String | `NPWR10600_00` | Unique ID of the title | Yes
-| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 platform | No, unless title platform is PS3, PS4 or PS Vita then **must** be `trophy`
+| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 or PC platform | No, unless title platform is PS3, PS4 or PS Vita then **must** be `trophy`
 
 #### Output JSON Response <!-- {docsify-ignore} -->
 
@@ -692,7 +692,7 @@ You can make a request to this URL for a specific title - using the unique `npCo
 | trophyTitleName | String | `ASTRO’s PLAYROOM` | Title name
 | trophyTitleDetail | String | `RESIDENT EVIL 5 Trophy Set` | Title description<br>**PS3, PS4 and PS Vita titles only**
 | trophyTitleIconUrl | String | `https://...` | URL of the icon for the trophy title
-| trophyTitlePlatfrom | String | `PS5` | The platform this title belongs to. Some games have trophy sets which are shared between multiple platforms (ie. PS4,PSVITA). The platforms will be comma separated.
+| trophyTitlePlatfrom | String | `PS5` | The platform this title belongs to. Some games have trophy sets which are shared between multiple platforms (ie. PS4,PSVITA or PS5,PSPC). The platforms will be comma separated.
 | definedTrophies | [JSON object](#trophy-groups-definedtrophies-json-objects) | | Total number of trophies for the title by type
 | trophyGroups | [JSON object](#trophy-groups-trophygroups-json-objects) | | Individual object for each trophy group returned
 
@@ -772,6 +772,56 @@ Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
 Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/NPWR20188_00/trophyGroups" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
 ```
+**Example 2 - Retrieve trophy groups for PS5 and PC title Ghost of Tsushima**
+
+    https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/NPWR22859_00/trophyGroups
+
+```json
+{
+  "npServiceName": "trophy2",
+  "npCommunicationId": "NPWR22859_00",
+  "trophySetVersion": "01.25",
+  "trophyTitleName": "Ghost of Tsushima",
+  "trophyTitleIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR22859_00/d7213b2e-8048-40ae-859e-3ce1863b9390.png",
+  "trophyTitlePlatform": "PS5,PSPC",
+  "definedTrophies": {
+    "bronze": 59,
+    "silver": 13,
+    "gold": 4,
+    "platinum": 1
+  },
+  "trophyGroups": [
+    {
+      "trophyGroupId": "default",
+      "trophyGroupName": "Ghost of Tsushima",
+      "trophyGroupIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR22859_00/d7213b2e-8048-40ae-859e-3ce1863b9390.png",
+      "definedTrophies": {
+        "bronze": 40,
+        "silver": 9,
+        "gold": 2,
+        "platinum": 1
+      }
+    },
+    {
+      "trophyGroupId": "001",
+      "trophyGroupName": "Ghost of Tsushima: Legends Mode",
+      "trophyGroupIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR22859_00/5da15285-93ab-4779-95ef-88278098be11.png",
+      "definedTrophies": {
+        "bronze": 3,
+        "silver": 2,
+        "gold": 1,
+        "platinum": 0
+      }
+    }
+    <#-- truncated --#>
+  ]
+}
+```
+Executing this example using Powershell - see [Querying the API](#powershell-7)
+```powershell
+Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/NPWR22859_00/trophyGroups" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 3
+```
+
 ### Summary of Trophies Earned by Trophy Group
 
     https://m.np.playstation.com/api/trophy/v1/users/{accountId}/npCommunicationIds/{npCommunicationId}/trophyGroups
@@ -792,7 +842,7 @@ This endpoint returns the earned summary of the title and its trophy groups only
 | --- | --- | --- | --- | --- |
 | accountId | String | `me`<br>`12340..` | The account whos trophy list is being accessed<br>Use `me` for the authenticating account | Yes
 | npCommunicationId | String | `NPWR20188_00` | Unique ID of the title | Yes
-| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 platform | No, unless title platform is PS3, PS4 or PS Vita then **must** be `trophy`
+| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 or PC platform | No, unless title platform is PS3, PS4 or PS Vita then **must** be `trophy`
 
 #### Output JSON Response <!-- {docsify-ignore} -->
 
@@ -991,7 +1041,7 @@ This endpoint can be used as a way of linking the `npCommunicationId` of a Troph
 
 | Attribute | Type | Example Response | Description |
 | --- | --- |--- | --- |
-| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 platform
+| npServiceName | String | `trophy`<br>`trophy2` | `trophy` for PS3, PS4, or PS Vita platforms<br>`trophy2` for the PS5 or PC platform
 | npCommunicationId | String | `NPWR20004_00` | Unique ID of the trophy set
 | trophyTitleName | String | `Returnal` | Title name
 | trophyTitleDetail | String | `RESIDENT EVIL 5 Trophy Set` | Title description<br>**PS3, PS4 and PS Vita titles only**
@@ -1256,13 +1306,15 @@ Executing this example using Powershell - see [Querying the API](#powershell-7)
 Invoke-RestMethod -Uri "https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?includeNotEarnedTrophyIds=true&npTitleIds=CUSA09171_00%2CPPSA01284_00%2CPPSA04874_00" -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
 ```
 
-## PS+ Game Help
+## Game Help Endpoints
 
-The updated trophy system which launched with the PlayStation 5 included a new PlayStation Plus subscriber benefit called Game Help. It provides tips and guides on how to complete specific trophies. This information was initially only accessible via the trophy list or activity cards on the console itself, however the PlayStation App was updated in May 2023 (v23.5.0) to include support for accessing the Game Help associated with trophies (activity card Game Help remains only accessible on console).
+The updated trophy system which launched with the PlayStation 5 included a new PlayStation Plus subscriber benefit called Game Help. It provides tips and guides on how to complete specific trophies. This information was initially only accessible via the trophy list or activity cards on the console itself, however the PlayStation App was updated in May 2023 (v23.5.0) to include support for accessing the Game Help associated with trophies (activity card Game Help remains only accessible on console).  
+
+As of [early 2024 Game Help no longer requires a PS+ subscription](https://blog.playstation.com/2024/03/26/introducing-community-game-help-a-new-enhancement-for-game-help-powered-by-user-generated-content/) and is now available to all PS5 players.
 
 There are two main endpoints for this function:
- * Request a list of trophies for a specific title which have Game Help available (accessible from all accounts).
- * Request the Game Help that is available for a specific trophy (only accessible to accounts which have a PS+ subscription).
+ * Request a list of trophies for a specific title which have Game Help available.
+ * Request the Game Help that is available for a specific trophy.
 
 The Game Help can come in the form of written descriptions for how to earn a trophy, or it can be in the form of a video guide. When a video is used the API response includes the URL to a HLS video stream, along with a short lived access token granting access to the file. The stream includes resolutions up to 1080p. It can be viewed in applications such as VLC media player, or downloaded with applications like ffmpeg or JDownloader 2.
 
@@ -1286,6 +1338,15 @@ You can check against all trophies, or you can limit the request to only check a
 | --- | --- | --- | --- | --- | --- 
 | npCommId | variables | String | `NPWR20188_00` | Unique ID of the title | Yes
 | trophyIds | variables | Array<br>String | `["0", "1"]` | Limit request to these specific trophy IDs | No
+
+##### Additional Headers <!-- {docsify-ignore} -->
+
+Requests to this endpoint must include additional headers in the request.
+
+| Key | Value |
+| --- | --- |
+| apollographql-client-name | PlayStationApp-Android |
+| content-type | application/json |
 
 #### Output JSON Response <!-- {docsify-ignore} -->
 
@@ -1486,7 +1547,7 @@ A JSON response is returned. The following are returned under the `data` attribu
 
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetHintAvailability&variables={"npCommId":"NPWR20188_00"}&extensions={"persistedQuery":{"version":1,"sha256Hash":"71bf26729f2634f4d8cca32ff73aaf42b3b76ad1d2f63b490a809b66483ea5a7"}}' -Authentication Bearer -Token $token | ConvertTo-Json -Depth 5
+Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetHintAvailability&variables={"npCommId":"NPWR20188_00"}&extensions={"persistedQuery":{"version":1,"sha256Hash":"71bf26729f2634f4d8cca32ff73aaf42b3b76ad1d2f63b490a809b66483ea5a7"}}' -Headers @{"apollographql-client-name"="PlayStationApp-Android";"content-type"="application/json"} -Authentication Bearer -Token $token | ConvertTo-Json -Depth 5
 ```
 
 **Example 2 - Check if trophies 18, 19 and 21 from PS5 title ASTRO’s PLAYROOM have Game Help available**
@@ -1521,14 +1582,12 @@ Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operation
 
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetHintAvailability&variables={"npCommId":"NPWR20188_00","trophyIds":["18", "19", "21"]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"71bf26729f2634f4d8cca32ff73aaf42b3b76ad1d2f63b490a809b66483ea5a7"}}' -Authentication Bearer -Token $token | ConvertTo-Json -Depth 5
+Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetHintAvailability&variables={"npCommId":"NPWR20188_00","trophyIds":["18", "19", "21"]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"71bf26729f2634f4d8cca32ff73aaf42b3b76ad1d2f63b490a809b66483ea5a7"}}' -Headers @{"apollographql-client-name"="PlayStationApp-Android";"content-type"="application/json"} -Authentication Bearer -Token $token | ConvertTo-Json -Depth 5
 ```
 
 ### Retrieve Game Help for a Trophy
 
     https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips
-
-!> The authenticating PSN account must have a PS+ subscription to access this endpoint
 
 Requests to this URL will retrieve the Game Help which is available for a specific trophy.
 
@@ -1548,6 +1607,15 @@ An array of trophies can be submitted within the `variables` parameter to retrie
 | trophyId | variables | String | `18` | ID of the trophy | Yes
 | udsObjectId | variables | String | `GATCHA_SECRET` | ID of the Game Help | Yes
 | helpType | variables | String | `helpType` | Type of Game Help | Yes
+
+##### Additional Headers <!-- {docsify-ignore} -->
+
+Requests to this endpoint must include additional headers in the request.
+
+| Key | Value |
+| --- | --- |
+| apollographql-client-name | PlayStationApp-Android |
+| content-type | application/json |
 
 #### Output JSON Response <!-- {docsify-ignore} -->
 
@@ -1641,7 +1709,7 @@ A JSON response is returned. The following are returned under the `data` attribu
 
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20188_00","trophies":[{"trophyId":"18","udsObjectId":"GATCHA_SECRET","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}' -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
+Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20188_00","trophies":[{"trophyId":"18","udsObjectId":"GATCHA_SECRET","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}' -Headers @{"apollographql-client-name"="PlayStationApp-Android";"content-type"="application/json"} -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
 ```
 
 **Example 2 - Retrieve the Game Help for a trophy where the help includes multiple steps to complete**
@@ -1696,7 +1764,7 @@ Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operation
 
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20842_00","trophies":[{"trophyId":"21","udsObjectId":"Weapon_to_Level_5","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}' -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
+Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20842_00","trophies":[{"trophyId":"21","udsObjectId":"Weapon_to_Level_5","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}' -Headers @{"apollographql-client-name"="PlayStationApp-Android";"content-type"="application/json"} -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
 ```
 
 **Example 3 - Retrieve the Game Help for trophy 18 and 45 in PS5 title ASTRO’s PLAYROOM**
@@ -1766,7 +1834,7 @@ Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operation
 
 Executing this example using Powershell - see [Querying the API](#powershell-7)
 ```powershell
-Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20188_00","trophies":[{"trophyId":"18","udsObjectId":"GATCHA_SECRET","helpType":"HINT"}, {"trophyId":"45","udsObjectId":"DAY1__GRAVITY_DAZE","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}' -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
+Invoke-RestMethod -Uri 'https://m.np.playstation.com/api/graphql/v1/op?operationName=metGetTips&variables={"npCommId":"NPWR20188_00","trophies":[{"trophyId":"18","udsObjectId":"GATCHA_SECRET","helpType":"HINT"}, {"trophyId":"45","udsObjectId":"DAY1__GRAVITY_DAZE","helpType":"HINT"}]}&extensions={"persistedQuery":{"version":1,"sha256Hash":"93768752a9f4ef69922a543e2209d45020784d8781f57b37a5294e6e206c5630"}}' -Headers @{"apollographql-client-name"="PlayStationApp-Android";"content-type"="application/json"} -Authentication Bearer -Token $token | ConvertTo-Json -Depth 10
 ```
 
 # Querying the API
